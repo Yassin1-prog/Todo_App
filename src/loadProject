@@ -1,0 +1,16 @@
+import createTodo from "./createTodo";
+import createProject from "./createProject";
+
+
+function projectLoad(project) {
+    const main = document.querySelector('.tasks');
+    const title = document.querySelector('.title');
+    main.innerHTML = '';
+    title.textContent = project.name;
+
+
+
+}
+
+export {projectLoad};
+

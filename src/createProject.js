@@ -1,8 +1,9 @@
 import createTodo from "./createTodo";
 
 class createProject {
-    constructor() {
+    constructor(name) {
         this.project = [];
+        this.name = name;
     }
 
     addProject(title, description, dueDate, priority) {
@@ -11,6 +12,10 @@ class createProject {
 
     getAmountTasks() {
         return this.project.length;
+    }
+
+    getPriority() {
+        return this.project[0].getPriority();
     }
 
 }

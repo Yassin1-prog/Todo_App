@@ -125,3 +125,7 @@ button:hover {
     border-radius: 5px;
     background-color: green;
 }
+
+.projectName {
+    background-color: cornflowerblue;
+}

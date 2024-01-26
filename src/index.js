@@ -1,8 +1,9 @@
 import createTodo from "./createTodo";
 import createProject from "./createProject";
+import { projectLoad } from "./loadProject";
 
 const projects = [];
-const inbox = new createProject();
+const inbox = new createProject('Inbox');
 projects.push(inbox);
 
 const dialog = document.querySelector("[data-modal]");
@@ -24,10 +25,23 @@ openButton.addEventListener("click", () => {
 
 closeButton.addEventListener("click", (e) => {
     e.preventDefault();
-
-    //const task = new createTodo(title, description, date, priority.value);
-    projects[0].addProject(title, description, date, priority.value);
     
+    let target;
+
+    const whichProject = document.querySelector('.title');
+
+    for(let i = 0; i < projects.length; i++) {
+        if(projects[i].name === whichProject.textContent) {
+             target = projects[i];
+        }
+
+    }
+
+
+    target.addProject(title, description, date, priority.value);
+    console.log(target.getPriority());
+    console.log(target.getAmountTasks());
+    console.log(projects.length);
 
     const btn = document.createElement('button');
     btn.textContent = title.value;
@@ -59,10 +73,19 @@ projectButton.addEventListener("click", () => {
 
 });
 
+
 confirmButton.addEventListener("click", () => {
-    const newProject = document.createElement('div');
+    const newProject = document.createElement('button');
     newProject.textContent = projectName.value;
+    newProject.classList.add("projectName");
+    const createdProject = new createProject(projectName.value);
     list.appendChild(newProject);
+    projects.push(createdProject);
+    newProject.addEventListener("click", projectLoad(createdProject));
     inputContainer.innerHTML = '';
     projectName.value = '';
 });
+
+function updateProjects() {
+    projects.forEach
+}
