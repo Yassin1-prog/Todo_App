@@ -52,7 +52,6 @@ div {
 
 button {
     border-radius: 5px;
-    width: 100%;
     outline: none;
     border: none; 
     font-size: 24px;
@@ -109,4 +108,20 @@ button:hover {
 .content >  div {
     margin: 10px;
     padding: 10px;
+}
+
+.createdButton {
+    width: 100%;
+    background-color: beige;
+    text-align: left;
+}
+
+.createdButton:hover {
+    background-color: lime;
+}
+
+.Confirm {
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: green;
 }

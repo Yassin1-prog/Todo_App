@@ -22,11 +22,29 @@
             <div class="projects">
                 <div class="project">Projects</div>
                 <div><button class="addProject"><i class="fa-solid fa-plus"></i>Add Project</button></div>
+                <div class="inputContainer"></div>
+                <div class="list"></div>
             </div>
         </div>
         <div class="content">
             <div class="title">Inbox</div>
             <div><button class="addTask"><i class="fa-solid fa-plus"></i>Add Task</button></div>
+            <div class="tasks"></div>
+            <dialog data-modal>
+                <form>
+                    <input title type="text" name="title" placeholder="Title">
+                    <input description type="text" name="description" placeholder="Description">
+                    <label for="Date">Date:</label>
+                    <input date type="date" name="date" id="Date">
+                    <label for="selectOption">Priority:</label>
+                    <select priority id="selectOption" name="selectOption" required>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                    <button type="submit" class="close" formmethod="dialog">Submit</button>
+                </form>
+            </dialog>
         </div>
     </div>
    <script src="main.js"></script>
