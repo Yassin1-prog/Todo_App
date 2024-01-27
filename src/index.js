@@ -6,6 +6,14 @@ const projects = [];
 const inbox = new createProject('Inbox');
 projects.push(inbox);
 
+const inbx = document.querySelector(".inbox");
+inbx.addEventListener("click", () => {
+    projectLoad(projects[0]);
+    updateTasks(projects[0]);
+});
+
+
+
 const dialog = document.querySelector("[data-modal]");
 const openButton = document.querySelector(".addTask");
 const closeButton = document.querySelector(".close");
@@ -34,20 +42,28 @@ closeButton.addEventListener("click", (e) => {
         if(projects[i].name === whichProject.textContent) {
              target = projects[i];
         }
-
     }
 
+    let flag = false;
+    for(let i = 0; i < target.project.length; i++) {
+        if(target.project[i].getTitle() == title.value) {
+            flag = true;
+            console.log(title.value);
+            //description.value = target.project[i].getDescription();
+            //date.value = target.project[i].getDate();
+            //priority.value = target.project[i].getPriority();
+            target.project[i].description = description.value;
+            target.project[i].date = date.value;
+            target.project[i].priority = priority.value;
+        }
+    }
 
-    target.addProject(title, description, date, priority.value);
-    console.log(target.getPriority());
-    console.log(target.getAmountTasks());
-    console.log(projects.length);
+    if(!flag) {
+        console.log(flag);
+        target.addProject(title.value, description.value, date.value, priority.value);
+    }
 
-    const btn = document.createElement('button');
-    btn.textContent = title.value;
-    btn.classList.add('createdButton');
-
-    taskHolder.appendChild(btn);
+    updateTasks(target);
 
     cleanInput.forEach( input => {
          input.value = '';
@@ -62,6 +78,7 @@ const inputContainer = document.querySelector('.inputContainer');
 const projectName = document.createElement('input');
 const list = document.querySelector('.list');
 projectName.type = 'text';
+projectName.name = 'project';
 projectName.placeholder = 'name';
 const confirmButton = document.createElement('button');
 confirmButton.textContent = "Confirm";
@@ -75,17 +92,59 @@ projectButton.addEventListener("click", () => {
 
 
 confirmButton.addEventListener("click", () => {
-    const newProject = document.createElement('button');
-    newProject.textContent = projectName.value;
-    newProject.classList.add("projectName");
     const createdProject = new createProject(projectName.value);
-    list.appendChild(newProject);
     projects.push(createdProject);
-    newProject.addEventListener("click", projectLoad(createdProject));
     inputContainer.innerHTML = '';
     projectName.value = '';
+    updateProjects();
 });
 
 function updateProjects() {
-    projects.forEach
+    list.innerHTML = '';
+    projects.forEach((project, index) => {
+
+        const newProject = document.createElement('button');
+        newProject.textContent = project.name;
+        newProject.classList.add("projectName");
+        newProject.setAttribute("data-index", index);
+
+        if(index!==0) list.appendChild(newProject);
+
+        newProject.addEventListener("click",  () => {
+            let rowIndex = parseInt(newProject.getAttribute("data-index"));
+            projectLoad(projects[rowIndex]);
+            updateTasks(projects[rowIndex]);
+        });
+
+    });
 }
+
+function updateTasks(project) {
+    taskHolder.textContent = '';
+    
+    project.project.forEach((task, index) => {
+        const btn = document.createElement('button');
+        btn.textContent = task.getTitle();
+        btn.setAttribute("data-index", index);
+        btn.classList.add('createdButton');
+
+        taskHolder.appendChild(btn);
+
+        btn.addEventListener("click", () => {
+            let rowIndex = parseInt(btn.getAttribute("data-index"));
+            loadTaskInfo(project.project[rowIndex]);
+        });
+    });
+    
+
+}
+
+function loadTaskInfo(task) {
+    dialog.showModal();
+    title.value = task.getTitle();
+    description.value = task.getDescription();
+    date.value = task.getDate();
+    priority.value = task.getPriority();
+
+}
+
