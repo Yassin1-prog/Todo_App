@@ -18,6 +18,10 @@ class createProject {
         return this.project[0].getPriority();
     }
 
+    saveToLocalStorage() {
+        localStorage.setItem(this.name, JSON.stringify(this.project));
+    }
+
 }
 
 export default createProject;

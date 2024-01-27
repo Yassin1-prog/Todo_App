@@ -2,7 +2,26 @@ import createTodo from "./createTodo";
 import createProject from "./createProject";
 import { projectLoad } from "./loadProject";
 
-const projects = [];
+function loadAllProjectsFromLocalStorage() {
+    const projects = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const projectName = localStorage.key(i);
+        const projectData = localStorage.getItem(projectName);
+        const projectTasks = JSON.parse(projectData).map(
+            ({ title, description, date, priority }) =>
+                new createTodo(title, description, date, priority)
+        );
+
+        const project = new createProject(projectName);
+        project.project = projectTasks;
+        projects.push(project);
+    }
+    return projects;
+}
+
+const projects = loadAllProjectsFromLocalStorage();
+
+//const projects = [];
 const inbox = new createProject('Inbox');
 projects.push(inbox);
 
@@ -10,6 +29,7 @@ const inbx = document.querySelector(".inbox");
 inbx.addEventListener("click", () => {
     projectLoad(projects[0]);
     updateTasks(projects[0]);
+    inbox.saveToLocalStorage();
 });
 
 
@@ -56,6 +76,7 @@ closeButton.addEventListener("click", (e) => {
 
     if(!flag) {
         target.addProject(title.value, description.value, date.value, priority.value);
+        target.saveToLocalStorage();
     }
 
     updateTasks(target);
@@ -88,6 +109,7 @@ projectButton.addEventListener("click", () => {
 confirmButton.addEventListener("click", () => {
     const createdProject = new createProject(projectName.value);
     projects.push(createdProject);
+    createdProject.saveToLocalStorage();
     inputContainer.innerHTML = '';
     projectName.value = '';
     updateProjects();
@@ -153,6 +175,7 @@ function updateTasks(project) {
         removeButton.addEventListener("click", () =>  {
             let colIndex = parseInt(removeButton.getAttribute("data-index"));
             project.project.splice(colIndex, 1);
+            project.saveToLocalStorage();
             updateTasks(project);
         });
     });  
@@ -174,3 +197,7 @@ window.addEventListener('click', (e) => {
     }
 });
 
+updateProjects();
+for(let i = 0; i < projects.length; i++) {
+    updateTasks(projects[i]);
+}
