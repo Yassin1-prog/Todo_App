@@ -111,10 +111,13 @@ button:hover {
 }
 
 .createdButton {
-    width: 100%;
+    width: 80%;
     background-color: beige;
     text-align: left;
+    margin: 10px;
 }
+
+
 
 .createdButton:hover {
     background-color: lime;
@@ -128,4 +131,14 @@ button:hover {
 
 .projectName {
     background-color: cornflowerblue;
+}
+
+.move {
+    margin-left: 50px;
+}
+
+
+.datee {
+    display: inline;
+    font-size: 16px;
 }
