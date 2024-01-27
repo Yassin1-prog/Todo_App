@@ -48,10 +48,6 @@ closeButton.addEventListener("click", (e) => {
     for(let i = 0; i < target.project.length; i++) {
         if(target.project[i].getTitle() == title.value) {
             flag = true;
-            console.log(title.value);
-            //description.value = target.project[i].getDescription();
-            //date.value = target.project[i].getDate();
-            //priority.value = target.project[i].getPriority();
             target.project[i].description = description.value;
             target.project[i].date = date.value;
             target.project[i].priority = priority.value;
@@ -59,7 +55,6 @@ closeButton.addEventListener("click", (e) => {
     }
 
     if(!flag) {
-        console.log(flag);
         target.addProject(title.value, description.value, date.value, priority.value);
     }
 
@@ -87,7 +82,6 @@ confirmButton.classList.add('Confirm');
 projectButton.addEventListener("click", () => {
     inputContainer.appendChild(projectName);
     inputContainer.appendChild(confirmButton);
-
 });
 
 
@@ -127,16 +121,41 @@ function updateTasks(project) {
         btn.textContent = task.getTitle();
         btn.setAttribute("data-index", index);
         btn.classList.add('createdButton');
+        
+        if(task.getPriority() === "low") {
+            btn.style.borderLeft = '4px solid green';
+        }
+        else if(task.getPriority() === "high") {
+            btn.style.borderLeft = '4px solid red'
+        }
+        else {
+            btn.style.borderLeft = '4px solid orange'
+        }
+
+        const dueDate = document.createElement('div');
+        dueDate.textContent = task.getDate();
+        dueDate.classList.add('datee');
+
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'remove';
+        removeButton.classList.add('move');
+        removeButton.setAttribute("data-index", index);
 
         taskHolder.appendChild(btn);
+        taskHolder.appendChild(dueDate);
+        taskHolder.appendChild(removeButton);
 
         btn.addEventListener("click", () => {
             let rowIndex = parseInt(btn.getAttribute("data-index"));
             loadTaskInfo(project.project[rowIndex]);
         });
-    });
-    
 
+        removeButton.addEventListener("click", () =>  {
+            let colIndex = parseInt(removeButton.getAttribute("data-index"));
+            project.project.splice(colIndex, 1);
+            updateTasks(project);
+        });
+    });  
 }
 
 function loadTaskInfo(task) {
@@ -147,4 +166,11 @@ function loadTaskInfo(task) {
     priority.value = task.getPriority();
 
 }
+
+
+window.addEventListener('click', (e) => {
+    if (e.target === dialog) {
+      dialog.close();
+    }
+});
 
